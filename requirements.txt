@@ -2,3 +2,6 @@ keyboard
 pyaudio
 pyautogui
 faster-whisper
+customtkinter
+pyperclip
+pyinstaller
