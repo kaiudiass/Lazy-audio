@@ -87,9 +87,15 @@ class SettingsWindow:
             font=ctk.CTkFont(size=12), text_color=COR_TEXTO_DIM,
         ).pack()
 
-        ctk.CTkLabel(w, text="by @kaiudiass",
+        lbl_autor = ctk.CTkLabel(w, text="by @kaiudiass",
                      font=ctk.CTkFont(size=13, weight="bold"),
-                     text_color="#5a4f7a").pack(pady=(6, 10))
+                     text_color="#5a4f7a", cursor="hand2")
+        lbl_autor.pack(pady=(6, 10))
+        lbl_autor.bind("<Button-1>", lambda e: self._abrir_github())
+
+    def _abrir_github(self):
+        import webbrowser
+        webbrowser.open("https://github.com/kaiudiass")
 
     def _iniciar_captura(self):
         if self._capturando:

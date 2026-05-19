@@ -61,13 +61,18 @@ class LazyAudioApp(ctk.CTk):
             logo_ctk = ctk.CTkImage(
                 light_image=img_logo, dark_image=img_logo, size=img_logo.size
             )
-            ctk.CTkLabel(header, text="", image=logo_ctk).pack(side="left")
+            lbl_logo = ctk.CTkLabel(header, text="", image=logo_ctk, cursor="hand2")
+            lbl_logo.pack(side="left")
+            lbl_logo.bind("<Button-1>", lambda e: self._abrir_github())
         else:
-            ctk.CTkLabel(
+            lbl_logo_txt = ctk.CTkLabel(
                 header, text="LAZY AUDIO",
                 font=ctk.CTkFont(size=22, weight="bold"),
                 text_color=COR_TEXTO,
-            ).pack(side="left")
+                cursor="hand2"
+            )
+            lbl_logo_txt.pack(side="left")
+            lbl_logo_txt.bind("<Button-1>", lambda e: self._abrir_github())
 
         img_eng = carregar_imagem("icone_engrenagem.png", (20, 20))
         if img_eng:
@@ -176,13 +181,15 @@ class LazyAudioApp(ctk.CTk):
         )
         self.textbox.pack(fill="x", padx=10, pady=(0, 8))
         self.textbox.insert("0.0", "Seu áudio ditado aparecerá aqui...")
-        self.textbox.configure(state="disabled")
 
-        ctk.CTkLabel(
+        lbl_autor = ctk.CTkLabel(
             self, text="by @kaiudiass",
             font=ctk.CTkFont(size=13, weight="bold"),
             text_color="#5a4f7a",
-        ).pack(pady=(6, 10))
+            cursor="hand2"
+        )
+        lbl_autor.pack(pady=(6, 10))
+        lbl_autor.bind("<Button-1>", lambda e: self._abrir_github_perfil())
 
     def _atualizar_status(self, texto: str, cor: str = COR_TEXTO_DIM):
         def _up():
@@ -197,9 +204,7 @@ class LazyAudioApp(ctk.CTk):
 
     def _copiar_texto(self):
         import pyperclip
-        self.textbox.configure(state="normal")
         texto = self.textbox.get("0.0", "end").strip()
-        self.textbox.configure(state="disabled")
 
         if not texto or texto == "Seu áudio ditado aparecerá aqui...":
             return
@@ -211,11 +216,17 @@ class LazyAudioApp(ctk.CTk):
             text="Copiar", text_color=COR_TEXTO_DIM, border_color=COR_BORDA
         ))
 
+    def _abrir_github(self):
+        import webbrowser
+        webbrowser.open("https://github.com/kaiudiass/Lazy-audio")
+
+    def _abrir_github_perfil(self):
+        import webbrowser
+        webbrowser.open("https://github.com/kaiudiass")
+
     def _set_historico(self, texto: str):
-        self.textbox.configure(state="normal")
         self.textbox.delete("0.0", "end")
         self.textbox.insert("0.0", texto)
-        self.textbox.configure(state="disabled")
 
     def _carregar_microfones(self):
         mics = audio_recorder.listar_microfones()
