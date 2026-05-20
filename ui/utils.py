@@ -1,4 +1,5 @@
 import os
+import sys
 from PIL import Image, ImageOps, ImageTk
 
 from config import BASE_DIR
@@ -20,7 +21,7 @@ def aplicar_icone_janela(janela, ico_nome: str = "logodoappicone.ico",
     caminho_ico = os.path.join(BASE_DIR, "image", ico_nome)
 
     def _aplicar():
-        if os.path.exists(caminho_ico):
+        if sys.platform == "win32" and os.path.exists(caminho_ico):
             janela.iconbitmap(caminho_ico)
         else:
             img = carregar_imagem(png_nome)
