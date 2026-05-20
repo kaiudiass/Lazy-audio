@@ -1,6 +1,6 @@
 import time
 import pyperclip
-import pyautogui
+import keyboard
 from faster_whisper import WhisperModel
 
 from config import ARQUIVO_AUDIO
@@ -23,4 +23,4 @@ def transcrever(idioma_nome: str) -> str:
 def digitar_texto(texto: str) -> None:
     pyperclip.copy(texto + " ")
     time.sleep(0.1)
-    pyautogui.hotkey("ctrl", "v")
+    keyboard.send("ctrl+v")
