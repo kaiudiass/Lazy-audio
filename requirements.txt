@@ -3,5 +3,6 @@ pyaudio
 faster-whisper
 customtkinter
 pyperclip
+Pillow
 pyinstaller
 pygame

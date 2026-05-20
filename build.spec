@@ -11,7 +11,8 @@ hiddenimports = []
 hiddenimports += collect_submodules('customtkinter')
 hiddenimports += collect_submodules('faster_whisper')
 hiddenimports += collect_submodules('ctranslate2')
-hiddenimports += ['pyperclip', 'keyboard', 'pyaudio', 'pyautogui']
+hiddenimports += collect_submodules('PIL')
+hiddenimports += ['pyperclip', 'keyboard', 'pyaudio', 'PIL', 'PIL.Image', 'PIL.ImageOps', 'PIL.ImageTk']
 
 a = Analysis(
     ['main.py'],
