@@ -1,7 +1,7 @@
 import tkinter as tk
 from PIL import Image, ImageDraw, ImageTk
 
-from config import COR_FUNDO, COR_ROXO, COR_ROXO_MED, COR_ROXO_GLOW
+from config import COR_FUNDO, COR_ROXO, COR_ROXO_MED, COR_ROXO_GLOW, COR_VERMELHO
 from ui.utils import carregar_imagem
 
 
@@ -57,7 +57,8 @@ class MicCanvas(tk.Canvas):
             )
 
     def _render(self, raio: float, cor: str, glow: bool = False,
-                anel_alpha: float = 0.0, anel_raio: float = 0.0):
+                anel_alpha: float = 0.0, anel_raio: float = 0.0,
+                cor_glow: str = COR_ROXO_GLOW, cor_anel: str = COR_ROXO):
         S     = self.SIZE
         SCALE = 4
         cx    = cy = S * SCALE // 2
@@ -67,7 +68,7 @@ class MicCanvas(tk.Canvas):
 
         if anel_alpha > 0 and anel_raio > 0:
             ra = int(anel_raio * SCALE)
-            gr, gg, gb = _hex_to_rgb(COR_ROXO)
+            gr, gg, gb = _hex_to_rgb(cor_anel)
             a = int(anel_alpha * 180)
             draw.ellipse(
                 [cx - ra, cy - ra, cx + ra, cy + ra],
@@ -77,7 +78,7 @@ class MicCanvas(tk.Canvas):
         if glow:
             for offset, alpha in [(14, 30), (10, 55), (6, 80)]:
                 rg = int((raio + offset) * SCALE)
-                gr, gg, gb = _hex_to_rgb(COR_ROXO_GLOW)
+                gr, gg, gb = _hex_to_rgb(cor_glow)
                 draw.ellipse(
                     [cx - rg, cy - rg, cx + rg, cy + rg],
                     fill=(gr, gg, gb, alpha),
@@ -132,9 +133,11 @@ class MicCanvas(tk.Canvas):
         raio_anel  = self.RAIO_BASE + self._pulso_raio
 
         self._render(
-            self._anim_raio, COR_ROXO_MED,
+            self._anim_raio, COR_VERMELHO,
             glow=True,
             anel_alpha=alpha_anel,
             anel_raio=raio_anel,
+            cor_glow="#b91c1c",
+            cor_anel=COR_VERMELHO,
         )
         self.after(20, self._tick)

@@ -95,6 +95,17 @@ class LazyAudioApp(ctk.CTk):
             )
         btn_cfg.pack(side="right")
 
+        self.som_mutado = False
+        self.btn_mute = ctk.CTkButton(
+            header, text="🔊", width=38, height=38,
+            corner_radius=10,
+            fg_color=COR_CARD2, hover_color=COR_BORDA,
+            border_width=1, border_color=COR_BORDA,
+            font=ctk.CTkFont(size=18),
+            command=self._toggle_mute,
+        )
+        self.btn_mute.pack(side="right", padx=(0, 10))
+
         ctk.CTkFrame(self, height=1, fg_color=COR_BORDA).pack(
             fill="x", padx=20, pady=(12, 0)
         )
@@ -195,7 +206,7 @@ class LazyAudioApp(ctk.CTk):
         def _up():
             self.lbl_status.configure(text=texto, text_color=cor)
             dot_cor = (
-                "#ef4444" if cor in (COR_ROXO_MED, COR_ROXO_CLARO)
+                "#ef4444" if cor in (COR_ROXO_MED, COR_ROXO_CLARO, COR_VERMELHO)
                 else COR_VERDE if cor == COR_VERDE
                 else COR_TEXTO_DIM
             )
@@ -274,8 +285,8 @@ class LazyAudioApp(ctk.CTk):
             return
 
         self.estado = "gravando"
-        dica = "Clique para parar" if self.gravacao_via_clique else "Solte a tecla para parar"
-        self._atualizar_status(f"Gravando... ({dica})", COR_ROXO_CLARO)
+        dica = " (Clique para parar)" if self.gravacao_via_clique else ""
+        self._atualizar_status(f"Gravando...{dica}", COR_VERMELHO)
         self.after(0, self.mic_canvas.iniciar_animacao)
 
         tecla_atual = self.tecla_var.get()
@@ -307,15 +318,40 @@ class LazyAudioApp(ctk.CTk):
         self._atualizar_status("Pronto para gravar", COR_VERDE)
         self.after(0, lambda: self.mic_canvas.parar_animacao("pronto"))
 
+    def _toggle_mute(self):
+        self.som_mutado = not getattr(self, "som_mutado", False)
+        if self.som_mutado:
+            self.btn_mute.configure(text="🔇")
+        else:
+            self.btn_mute.configure(text="🔊")
+
+    def _tocar_som_ativacao(self):
+        if getattr(self, "som_mutado", False):
+            return
+        def _tocar():
+            try:
+                import os
+                os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+                import pygame
+                if not pygame.mixer.get_init():
+                    pygame.mixer.init()
+                pygame.mixer.music.load("audio/audio.mp3")
+                pygame.mixer.music.play()
+            except Exception as e:
+                print(f"Erro ao tocar som: {e}")
+        threading.Thread(target=_tocar, daemon=True).start()
+
     def _escutar_teclado(self):
         while self.rodando:
             if self.estado == "pronto" and not self._settings._capturando:
                 tecla = self.tecla_var.get()
                 try:
                     if keyboard.is_pressed(tecla):
+                        self._tocar_som_ativacao()
                         threading.Thread(target=self._fluxo, daemon=True).start()
                         while keyboard.is_pressed(tecla):
                             time.sleep(0.05)
+                        self._tocar_som_ativacao()
                 except Exception:
                     pass
             time.sleep(0.05)
