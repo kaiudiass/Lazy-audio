@@ -1,6 +1,8 @@
+import os
+import sys
 import threading
 import time
-import keyboard
+from core import hotkey
 import customtkinter as ctk
 
 from config import (
@@ -292,7 +294,7 @@ class LazyAudioApp(ctk.CTk):
         tecla_atual = self.tecla_var.get()
 
         def continuar_gravando() -> bool:
-            return keyboard.is_pressed(tecla_atual) or self.gravacao_via_clique
+            return hotkey.is_pressed(tecla_atual) or self.gravacao_via_clique
 
         sucesso = audio_recorder.gravar(
             self.indice_selecionado,
@@ -330,26 +332,39 @@ class LazyAudioApp(ctk.CTk):
             return
         def _tocar():
             try:
-                import os
                 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+                # No Linux com sudo, herda o PULSE_SERVER do usuário real
+                if sys.platform != "win32":
+                    uid = os.environ.get("SUDO_UID") or str(os.getuid())
+                    pulse_sock = f"/run/user/{uid}/pulse/native"
+                    if os.path.exists(pulse_sock):
+                        os.environ.setdefault("PULSE_SERVER", f"unix:{pulse_sock}")
+                        os.environ.setdefault("XDG_RUNTIME_DIR", f"/run/user/{uid}")
                 import pygame
                 if not pygame.mixer.get_init():
                     pygame.mixer.init()
-                pygame.mixer.music.load("audio/audio.mp3")
+                from config import BASE_DIR
+                caminho_som = os.path.join(BASE_DIR, "audio", "audio.mp3")
+                pygame.mixer.music.load(caminho_som)
                 pygame.mixer.music.play()
             except Exception as e:
                 print(f"Erro ao tocar som: {e}")
         threading.Thread(target=_tocar, daemon=True).start()
 
+    @staticmethod
+    def _normalizar_tecla(tecla: str) -> str:
+        """Normaliza nomes de tecla para compatibilidade Windows/Linux."""
+        return tecla.lower()
+
     def _escutar_teclado(self):
         while self.rodando:
             if self.estado == "pronto" and not self._settings._capturando:
-                tecla = self.tecla_var.get()
+                tecla = self._normalizar_tecla(self.tecla_var.get())
                 try:
-                    if keyboard.is_pressed(tecla):
+                    if hotkey.is_pressed(tecla):
                         self._tocar_som_ativacao()
                         threading.Thread(target=self._fluxo, daemon=True).start()
-                        while keyboard.is_pressed(tecla):
+                        while hotkey.is_pressed(tecla):
                             time.sleep(0.05)
                         self._tocar_som_ativacao()
                 except Exception:

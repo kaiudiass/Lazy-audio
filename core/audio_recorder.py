@@ -17,7 +17,7 @@ def listar_microfones() -> dict[str, int]:
 
 
 def gravar(indice_dispositivo: int, tecla_fn, on_inicio=None, on_fim=None) -> bool:
-    CHUNK   = 1024
+    CHUNK   = 4096
     FORMATO = pyaudio.paInt16
     CANAIS  = 1
     TAXA    = 44100
@@ -38,7 +38,7 @@ def gravar(indice_dispositivo: int, tecla_fn, on_inicio=None, on_fim=None) -> bo
 
     frames = []
     while tecla_fn():
-        frames.append(stream.read(CHUNK))
+        frames.append(stream.read(CHUNK, exception_on_overflow=False))
 
     stream.stop_stream()
     stream.close()

@@ -1,4 +1,5 @@
 keyboard
+pynput
 pyaudio
 faster-whisper
 customtkinter

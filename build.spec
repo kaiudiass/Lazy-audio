@@ -12,7 +12,9 @@ hiddenimports += collect_submodules('customtkinter')
 hiddenimports += collect_submodules('faster_whisper')
 hiddenimports += collect_submodules('ctranslate2')
 hiddenimports += collect_submodules('PIL')
-hiddenimports += ['pyperclip', 'keyboard', 'pyaudio', 'PIL', 'PIL.Image', 'PIL.ImageOps', 'PIL.ImageTk']
+hiddenimports += collect_submodules('pynput')
+hiddenimports += ['pyperclip', 'keyboard', 'pyaudio', 'PIL', 'PIL.Image', 'PIL.ImageOps', 'PIL.ImageTk',
+                   'pynput', 'pynput.keyboard', 'pynput.keyboard._xorg', 'pynput.keyboard._win32']
 
 a = Analysis(
     ['main.py'],
