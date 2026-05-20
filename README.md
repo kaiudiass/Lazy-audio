@@ -8,15 +8,15 @@ O Lazy Audio é uma aplicação desktop moderna desenvolvida para transformar su
 
 ## 🚀 Como Instalar e Rodar (Mais Fácil)
 
-[**📥 Baixe a versão mais recente aqui (v1.0.0)**](https://github.com/kaiudiass/Lazy-audio/releases/tag/v1.0.0)
+[**📥 Baixe a versão mais recente aqui (v1.1.0)**](https://github.com/kaiudiass/Lazy-audio/releases/tag/v1.1.0)
 
 ### 🪟 Para Windows
-1. Baixe o arquivo [`LazyAudio-Windows.exe`](https://github.com/kaiudiass/Lazy-audio/releases/tag/v1.0.0).
+1. Baixe o arquivo [`LazyAudio-Windows.exe`](https://github.com/kaiudiass/Lazy-audio/releases/tag/v1.1.0).
 2. Dê um duplo clique para abrir.
    - *Nota: Caso o Windows SmartScreen exiba um alerta azul, clique em "Mais informações" e depois em "Executar mesmo assim".*
 
 ### 🐧 Para Linux
-1. Baixe o arquivo [`LazyAudio-Linux`](https://github.com/kaiudiass/Lazy-audio/releases/tag/v1.0.0).
+1. Baixe o arquivo [`LazyAudio-Linux`](https://github.com/kaiudiass/Lazy-audio/releases/tag/v1.1.0).
 2. Abra o terminal na pasta onde baixou e dê permissão de execução:
    ```bash
    chmod +x LazyAudio-Linux
