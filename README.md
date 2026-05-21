@@ -21,7 +21,11 @@ O Lazy Audio é uma aplicação desktop moderna desenvolvida para transformar su
    ```bash
    chmod +x LazyAudio-Linux
    ```
-3. O aplicativo precisa de acesso global ao teclado para funcionar os atalhos. Por isso, rode como administrador:
+3. O aplicativo precisa colar texto e ler o teclado globalmente. Instale os gerenciadores de área de transferência do Linux (se já não tiver):
+   ```bash
+   sudo apt install xclip wl-clipboard
+   ```
+4. Em seguida, rode o aplicativo como administrador (necessário para ler o teclado globalmente no Linux):
    ```bash
    sudo ./LazyAudio-Linux
    ```

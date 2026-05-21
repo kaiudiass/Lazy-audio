@@ -1,7 +1,7 @@
 import os
 import threading
 import time
-import keyboard
+from core import hotkey
 import customtkinter as ctk
 
 from config import (
@@ -109,7 +109,7 @@ class SettingsWindow:
 
     def _capturar_thread(self):
         time.sleep(0.1)
-        tecla = keyboard.read_event().name
+        tecla = hotkey.read_key()
         self._parent.after(0, lambda: self._finalizar_captura(tecla))
 
     def _finalizar_captura(self, tecla: str):
